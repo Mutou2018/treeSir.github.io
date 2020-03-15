@@ -8,7 +8,7 @@ subtitle: 郭杰
 description: 爱生活 学技术 不秃头 要减肥
 keywords: “FE”
 author: daMu
-language: zh-cn
+language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: anatole
+theme: Butterfly
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
