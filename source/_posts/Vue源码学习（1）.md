@@ -2,6 +2,7 @@
 title: Vue源码学习（1）
 date: 2020-03-16 05:49:17
 tags: vue，js
+description: vue源码学习，了解vue是什么，源文件入口
 ---
 # vue源码阅读笔记（1）
 
