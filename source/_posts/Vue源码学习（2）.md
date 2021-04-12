@@ -11,7 +11,7 @@ top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-
 
 /core/vdom/vnode.js由vnode的定义。这里面定义了tag，data，child等参数。VNode映射到真实的DOM实际上要经历create，diff，patch等过程。
 
-而VNode的create创建方法则是定义在core/vdom/create-element中的。
+而VNode的create创建方法则是定义在core/vdom/create-element中的
 
 1.1 VNode create
 
