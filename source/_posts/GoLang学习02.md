@@ -1,3 +1,10 @@
+---
+title: GoLang学习02
+date: 
+tags:
+top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/%E7%8B%97%E7%8B%97.jpg
+cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/golang.png
+---
 # GoLang学习02
 
 - 数组和切片
@@ -6,7 +13,7 @@
 
   数组其中比较关键的就是：*唯一类型、长度固定、大小不可更改* 
 
-  golang里面数组是值类型，不是引用类型！！
+  golang里面数组是值类型，不是引用类型！
 
   1.数组
 
