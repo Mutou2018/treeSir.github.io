@@ -1,7 +1,7 @@
 ---
 title: GoLang学习02
-date: 
-tags:
+date: 2021-04-13 20:52:36
+tags: Golang
 top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/%E7%8B%97%E7%8B%97.jpg
 cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/golang.png
 ---

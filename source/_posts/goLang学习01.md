@@ -1,6 +1,5 @@
 ---
 title: GoLang学习01
-date: 
 tags:
 top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/%E7%8B%97%E7%8B%97.jpg
 cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/golang.png
