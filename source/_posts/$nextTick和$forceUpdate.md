@@ -1,5 +1,6 @@
 ---
 title: $nextTick和$forceUpdate解析
+date: 2021-04-19 09:14:48
 tags: vue
 cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png
 top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-go.jpg
