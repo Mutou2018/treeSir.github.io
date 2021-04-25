@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vue源码学习（3） | treeSir's blog</title><meta name="keywords" content="vue"><meta name="author" content="daMu"><meta name="copyright" content="daMu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Vue源码学习（3）  vue技术揭秘笔记  组件组件创建主要是基于core&#x2F;vdom&#x2F;create-component.js。 12345678910111213function createComponent ( Ctor: Class&lt;Component&gt; | Function | Object | void, data: ?VNodeData, context: Compone">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习（3）">
+<meta property="og:url" content="http://yoursite.com/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/index.html">
+<meta property="og:site_name" content="treeSir&#39;s blog">
+<meta property="og:description" content="Vue源码学习（3）  vue技术揭秘笔记  组件组件创建主要是基于core&#x2F;vdom&#x2F;create-component.js。 12345678910111213function createComponent ( Ctor: Class&lt;Component&gt; | Function | Object | void, data: ?VNodeData, context: Compone">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png">
+<meta property="article:published_time" content="2021-04-25T07:45:41.821Z">
+<meta property="article:modified_time" content="2021-04-25T07:47:00.211Z">
+<meta property="article:author" content="daMu">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png"><link rel="shortcut icon" href="/treeSir.github.io/img/yaya1.png"><link rel="canonical" href="http://yoursite.com/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/treeSir.github.io/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/treeSir.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-25 15:47:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/treeSir.github.io/img/yaya1.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/treeSir.github.io/archives/"><div class="headline">文章</div><div class="length-num">9</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/treeSir.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-go.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/treeSir.github.io/">treeSir's blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vue源码学习（3）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-25T07:45:41.821Z" title="发表于 2021-04-25 15:45:41">2021-04-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-25T07:47:00.211Z" title="更新于 2021-04-25 15:47:00">2021-04-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vue源码学习（3）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Vue源码学习（3）</p>
+<blockquote>
+<p>vue技术揭秘笔记</p>
+</blockquote>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>组件创建主要是基于core/vdom/create-component.js。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"> Ctor: Class&lt;Component&gt; | <span class="built_in">Function</span> | <span class="built_in">Object</span> | <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"> data: ?VNodeData,</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"> context: Component,</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"> children: ?<span class="built_in">Array</span>&lt;VNode&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"> tag?: string</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params"></span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心步骤主要有三个：</p>
+<ul>
+<li><p>构造子类构造函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> baseCtor = context.$options._base</span><br><span class="line"></span><br><span class="line">  <span class="comment">// plain options object: turn it into a constructor</span></span><br><span class="line">  <span class="keyword">if</span> (isObject(Ctor)) &#123;</span><br><span class="line">    Ctor = baseCtor.extend(Ctor)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>vue创建组件的时候</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> HelloWorld <span class="keyword">from</span> <span class="string">&#x27;./components/HelloWorld&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">&#x27;app&#x27;</span>,</span><br><span class="line">  components: &#123;</span><br><span class="line">    HelloWorld</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>vm.$options._base</code> 拿到 Vue 这个构造函数了。Vue.extend函数的作用就是构造Vue的子类。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Sub = <span class="function"><span class="keyword">function</span> <span class="title">VueComponent</span> (<span class="params">options</span>) </span>&#123;</span><br><span class="line">   <span class="built_in">this</span>._init(options)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装组件钩子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// install component management hooks onto the placeholder node</span></span><br><span class="line">installComponentHooks(data)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实例化 <code>vnode</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name = Ctor.options.name || tag</span><br><span class="line"><span class="keyword">const</span> vnode = <span class="keyword">new</span> VNode(</span><br><span class="line">  <span class="string">`vue-component-<span class="subst">$&#123;Ctor.cid&#125;</span><span class="subst">$&#123;name ? <span class="string">`-<span class="subst">$&#123;name&#125;</span>`</span> : <span class="string">&#x27;&#x27;</span>&#125;</span>`</span>,</span><br><span class="line">  data, <span class="literal">undefined</span>, <span class="literal">undefined</span>, <span class="literal">undefined</span>, context,</span><br><span class="line">  &#123; Ctor, propsData, listeners, tag, children &#125;,</span><br><span class="line">  asyncFactory</span><br><span class="line">)</span><br><span class="line"><span class="keyword">return</span> vnode</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>createComponent要返回一个组件的vnode。</p>
+<h3 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h3><p>createComponent会使用__path__ ,在<code>vdom/patch.js</code>中使用createElm方法。在子组件挂载时触发：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createComponent</span> (<span class="params">vnode, insertedVnodeQueue, parentElm, refElm</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> i = vnode.data</span><br><span class="line">  <span class="keyword">if</span> (isDef(i)) &#123;</span><br><span class="line">    <span class="keyword">const</span> isReactivated = isDef(vnode.componentInstance) &amp;&amp; i.keepAlive</span><br><span class="line">    <span class="keyword">if</span> (isDef(i = i.hook) &amp;&amp; isDef(i = i.init)) &#123;</span><br><span class="line">      i(vnode, <span class="literal">false</span> <span class="comment">/* hydrating */</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// after calling the init hook, if the vnode is a child component</span></span><br><span class="line">    <span class="comment">// it should&#x27;ve created a child instance and mounted it. the child</span></span><br><span class="line">    <span class="comment">// component also has set the placeholder vnode&#x27;s elm.</span></span><br><span class="line">    <span class="comment">// in that case we can just return the element and be done.</span></span><br><span class="line">    <span class="keyword">if</span> (isDef(vnode.componentInstance)) &#123;</span><br><span class="line">      initComponent(vnode, insertedVnodeQueue)</span><br><span class="line">      insert(parentElm, vnode.elm, refElm)</span><br><span class="line">      <span class="keyword">if</span> (isTrue(isReactivated)) &#123;</span><br><span class="line">        reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>组件初始化时会调用组件init函数，普通非keep-alive的组件是挂在vnode.componentInstance上的，<code>createComponentInstanceForVnode(vnode,activeInstance)</code>,这里会返回new vnode.componentOptions.Ctor(options)，之前组件Ctor就是新实例化Vue，重新走一遍_init，但是因为是组件所以触发的函数是<code>initInternalComponent</code>,组件<code>child.$mount(hydrating ? vnode.elm : undefined, hydrating)</code>初始化后$mount，执行mountComponent，挂载组件，再次回到之前的$mount-&gt;render-&gt;vnode-&gt;patch。在<code>vm_render</code>生成vnode之后，之后就要执行 <code>vm. _update</code> 。</p>
+<blockquote>
+<p>Vue的初始化是一个深度遍历的过程，在实例化子组件的过程中,需要知道当前的上下文的Vue实例是什么，并把它作为子组件的父Vue实例。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">initComponent(vnode, insertedVnodeQueue)</span><br><span class="line">insert(parentElm, vnode.elm, refElm)</span><br></pre></td></tr></table></figure>
+
+<p>完成组件initComponent过程后，执行insert完成dom插入，所以组件DOM的插入顺序是先子后父。</p>
+<p>无论是组件还是项目初始都会执行_init(options),而_init会执行mergeOptions</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// merge options</span></span><br><span class="line">   <span class="keyword">if</span> (options &amp;&amp; options._isComponent) &#123;</span><br><span class="line">     initInternalComponent(vm, options)</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     vm.$options = mergeOptions(</span><br><span class="line">       resolveConstructorOptions(vm.constructor),</span><br><span class="line">       options || &#123;&#125;,</span><br><span class="line">       vm</span><br><span class="line">     )</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>项目初始化时的Vue.options是在<code>initGlobalAPI(Vue)</code>中定义了这个值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//shared/constants.js</span></span><br><span class="line">ASSET_TYPES = [</span><br><span class="line">  <span class="string">&#x27;component&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;directive&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;filter&#x27;</span></span><br><span class="line">]</span><br><span class="line"><span class="comment">// global-api/index.js</span></span><br><span class="line">ASSET_TYPES.forEach(<span class="function"><span class="params">type</span> =&gt;</span> &#123;</span><br><span class="line">    Vue.options[type + <span class="string">&#x27;s&#x27;</span>] = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>mergeOptions</code>的合并返回到options，最终获得的options如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">vm.$options = mergeOptions(</span><br><span class="line">  resolveConstructorOptions(vm.constructor),</span><br><span class="line">  options || &#123;&#125;,</span><br><span class="line">  vm</span><br><span class="line">)</span><br><span class="line">vm.$options = &#123;</span><br><span class="line">  components: &#123; &#125;,</span><br><span class="line">  created: [</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">created</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;parent created&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  directives: &#123; &#125;,</span><br><span class="line">  filters: &#123; &#125;,</span><br><span class="line">  _base: <span class="function"><span class="keyword">function</span> <span class="title">Vue</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;,</span><br><span class="line">  el: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">  render: <span class="function"><span class="keyword">function</span> (<span class="params">h</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>组件场景的返回的option</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">vm.$options = &#123;</span><br><span class="line">  parent: Vue <span class="comment">/*父Vue实例*/</span>,</span><br><span class="line">  propsData: <span class="literal">undefined</span>,</span><br><span class="line">  _componentTag: <span class="literal">undefined</span>,</span><br><span class="line">  _parentVnode: VNode <span class="comment">/*父VNode实例*/</span>,</span><br><span class="line">  _renderChildren:<span class="literal">undefined</span>,</span><br><span class="line">  __proto__: &#123;</span><br><span class="line">    components: &#123; &#125;,</span><br><span class="line">    directives: &#123; &#125;,</span><br><span class="line">    filters: &#123; &#125;,</span><br><span class="line">    _base: <span class="function"><span class="keyword">function</span> <span class="title">Vue</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">    &#125;,</span><br><span class="line">    _Ctor: &#123;&#125;,</span><br><span class="line">    created: [</span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">created</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;parent created&#x27;</span>)</span><br><span class="line">      &#125;, <span class="function"><span class="keyword">function</span> <span class="title">created</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;child created&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    mounted: [</span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">mounted</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;child mounted&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> &#123;</span><br><span class="line">         msg: <span class="string">&#x27;Hello Vue&#x27;</span></span><br><span class="line">       &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    template: <span class="string">&#x27;&lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对于 <code>options</code> 的合并有 2 种方式</p>
+<ul>
+<li>子组件初始化过程通过 <code>initInternalComponent</code> 方式</li>
+<li>外部初始化 Vue 通过 <code>mergeOptions</code> 的方式，合并完的结果保留在 <code>vm.$options</code> 中。</li>
+</ul>
+</blockquote>
+<p>组件的初始化比外部的<code>mergeOptions</code> 要快。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">daMu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/">http://yoursite.com/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">treeSir's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/treeSir.github.io/tags/vue/">vue</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/treeSir.github.io/2021/04/19/$nextTick%E5%92%8C$forceUpdate/"><img class="next-cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="onerror=null;src='/treeSir.github.io/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">$nextTick和$forceUpdate解析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/treeSir.github.io/2021/04/19/$nextTick和$forceUpdate/" title="$nextTick和$forceUpdate解析"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-19</div><div class="title">$nextTick和$forceUpdate解析</div></div></a></div><div><a href="/treeSir.github.io/2020/03/16/Vue源码学习（1）/" title="Vue源码学习（1）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-16</div><div class="title">Vue源码学习（1）</div></div></a></div><div><a href="/treeSir.github.io/2020/03/18/Vue源码学习（2）/" title="Vue源码学习（2）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-18</div><div class="title">Vue源码学习（2）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/treeSir.github.io/img/yaya1.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">daMu</div><div class="author-info__description">减肥</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/treeSir.github.io/archives/"><div class="headline">文章</div><div class="length-num">9</div></a></div><div class="card-info-data-item is-center"><a href="/treeSir.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#patch"><span class="toc-number">2.</span> <span class="toc-text">patch</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/" title="Vue源码学习（3）"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（3）"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/04/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%883%EF%BC%89/" title="Vue源码学习（3）">Vue源码学习（3）</a><time datetime="2021-04-25T07:45:41.821Z" title="发表于 2021-04-25 15:45:41">2021-04-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/04/19/$nextTick%E5%92%8C$forceUpdate/" title="$nextTick和$forceUpdate解析"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="$nextTick和$forceUpdate解析"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/04/19/$nextTick%E5%92%8C$forceUpdate/" title="$nextTick和$forceUpdate解析">$nextTick和$forceUpdate解析</a><time datetime="2021-04-19T01:14:48.000Z" title="发表于 2021-04-19 09:14:48">2021-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/04/13/GoLang%E5%AD%A6%E4%B9%A002/" title="GoLang学习02"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/golang.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="GoLang学习02"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/04/13/GoLang%E5%AD%A6%E4%B9%A002/" title="GoLang学习02">GoLang学习02</a><time datetime="2021-04-13T12:52:36.000Z" title="发表于 2021-04-13 20:52:36">2021-04-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/03/28/goLang%E5%AD%A6%E4%B9%A001/" title="GoLang学习01"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/golang.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="GoLang学习01"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/03/28/goLang%E5%AD%A6%E4%B9%A001/" title="GoLang学习01">GoLang学习01</a><time datetime="2021-03-28T10:52:36.000Z" title="发表于 2021-03-28 18:52:36">2021-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2020/03/25/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%863/" title="前端基础知识3"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/es6.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="前端基础知识3"/></a><div class="content"><a class="title" href="/treeSir.github.io/2020/03/25/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%863/" title="前端基础知识3">前端基础知识3</a><time datetime="2020-03-25T14:52:36.000Z" title="发表于 2020-03-25 22:52:36">2020-03-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By daMu</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/treeSir.github.io/js/utils.js"></script><script src="/treeSir.github.io/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
