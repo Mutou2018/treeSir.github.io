@@ -58,6 +58,25 @@ vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
 
 vm.$el 的赋值是在之前 mountComponent 函数做的， vnode 对应的是调⽤ render 函数的返回值， hydrating 在⾮服务端渲染情况下为 false， removeOnly 为 false。
 
+```
+var app = new Vue({
+  el: '#app',
+  render: function (createElement) {
+    return createElement('div', {
+      attrs: {
+        id: 'app'
+      },
+    }, this.message)
+  },
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+```
+初始化render
+`vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)`。
+vm.$el对应`<div id="app"></div>`，vnode对应调用render函数返回的vnode。其他都是flase。
+
 初始化传入的app是一个真实的dom节点，进入isRealElement流程，
 
 ```

@@ -135,7 +135,7 @@ if (vm.$vnode == null) { //通过 == null来表示当前是Vue的根实例
 ```
 
 在mountComponent中主要方法是vm._render,vm. _update。
-
+watch主要是初始化执行回调函数，另一个就是监控数据变化时执行回调。
 
 
 3.3 render
@@ -146,12 +146,22 @@ if (vm.$vnode == null) { //通过 == null来表示当前是Vue的根实例
 > 该渲染函数接收一个 createElement 方法作为第一个参数用来创建 VNode。
 
 官网上说createElement方法作为第一个参数来创建VNode。
+createElement()是对_createElement()的二次封装。
+
+`_createElement(context, tag, data, children, normalizationType)`
+context:代表vnode的上下文环境
+tag:代表标签
+data:代表vnode数据
+children:当前vnode的子节点
+normalizationType:表示子节点规范的类型
+子组件规范化：
 
 ```
 vnode = render.call(vm._renderProxy, vm.$createElement)
 ```
 
 createElement对应vm.$createElement
+vnode由createElement创建，vnode的children也是vnode，这样形成了vnode tree
 
 ```
 vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
