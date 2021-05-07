@@ -4,7 +4,7 @@
 
 # Site
 title:  treeSir's blog
-subtitle: 郭杰
+subtitle: daMu
 description: 减肥
 keywords: “FE”
 author: daMu
@@ -13,13 +13,13 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
-root: /treeSir.github.io
+url: https://github.com/DaMu2018/treeSir.github.io
+root: /treeSir.github.io/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
-  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+  trailing_index: false # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: false # Set to false to remove trailing '.html' from permalinks
 
 # Directory
 source_dir: source
