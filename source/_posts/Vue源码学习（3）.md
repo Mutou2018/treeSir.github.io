@@ -1,6 +1,6 @@
 ---
 title: Vue源码学习（3）
-date: 2021年4月25日 18:46:42
+date: 2021-4-25 18:46:42
 tags: vue
 cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png
 top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-go.jpg
