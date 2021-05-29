@@ -6,7 +6,7 @@ cover: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png
 top_img: https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-go.jpg
 ---
 
-*最近太忙了没有保持更新i😂，忙里偷闲把之前的文章上一个*
+*最近太忙了没有保持更新😂，之前的顺序发错了，补发一下，5响应式补充-组件*
 
 ### 组件更新
 
