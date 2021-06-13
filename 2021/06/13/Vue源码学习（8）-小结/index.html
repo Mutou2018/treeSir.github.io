@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vue源码学习（8）小结 | treeSir's blog</title><meta name="keywords" content="vue"><meta name="author" content="daMu"><meta name="copyright" content="daMu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="小结保持周更好困难，已经断更了，之前的存货快写完了，最近可能更新一下js基础知识，巩固基础😜 Vue源码阅读大致告一段落，在阅读源码的时候，因为当前版本和书中介绍的版本已经有很多的不同，加上逻辑确实比较绕，所以有时候看到云里雾里的，但是总的来说，对于Vue有了更加深入的认识。 1.Vue创建时都是以render为主，包括目前常用的template写法，都是会经过编译转换成render类型的。 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码学习（8）小结">
+<meta property="og:url" content="https://github.com/DaMu2018/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/">
+<meta property="og:site_name" content="treeSir&#39;s blog">
+<meta property="og:description" content="小结保持周更好困难，已经断更了，之前的存货快写完了，最近可能更新一下js基础知识，巩固基础😜 Vue源码阅读大致告一段落，在阅读源码的时候，因为当前版本和书中介绍的版本已经有很多的不同，加上逻辑确实比较绕，所以有时候看到云里雾里的，但是总的来说，对于Vue有了更加深入的认识。 1.Vue创建时都是以render为主，包括目前常用的template写法，都是会经过编译转换成render类型的。 2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png">
+<meta property="article:published_time" content="2021-06-13T03:10:13.000Z">
+<meta property="article:modified_time" content="2021-06-13T03:12:00.166Z">
+<meta property="article:author" content="daMu">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png"><link rel="shortcut icon" href="/treeSir.github.io/img/yaya1.png"><link rel="canonical" href="https://github.com/DaMu2018/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/treeSir.github.io/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/treeSir.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-06-13 11:12:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/treeSir.github.io/img/yaya1.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/treeSir.github.io/archives/"><div class="headline">文章</div><div class="length-num">15</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/treeSir.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/ready-to-go.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/treeSir.github.io/">treeSir's blog</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Vue源码学习（8）小结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-06-13T03:10:13.000Z" title="发表于 2021-06-13 11:10:13">2021-06-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-06-13T03:12:00.166Z" title="更新于 2021-06-13 11:12:00">2021-06-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Vue源码学习（8）小结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><em>保持周更好困难，已经断更了，之前的存货快写完了，最近可能更新一下js基础知识，巩固基础😜</em></p>
+<p>Vue源码阅读大致告一段落，在阅读源码的时候，因为当前版本和书中介绍的版本已经有很多的不同，加上逻辑确实比较绕，所以有时候看到云里雾里的，但是总的来说，对于Vue有了更加深入的认识。</p>
+<p>1.Vue创建时都是以render为主，包括目前常用的template写法，都是会经过编译转换成render类型的。</p>
+<p>2.Vue组件，每一个都是Vue的实例。但是他们呈现树结构，根元素都是一个，且只能有一个。组件中使用<code>&lt;template&gt;&lt;template/&gt;</code>语法里只能有一个<code>&lt;div&gt;&lt;div/&gt;</code>知道了原因，因为解析的时候有一个根节点，根据作者解答是因为diff算法的原因。</p>
+<p>3.知道了Vue创建时所走的流程，new Vue –&gt; $mount –&gt; compiler –&gt; render –&gt; vnode –&gt; patch –&gt; DOM</p>
+<p>comilper –&gt;parse –&gt;生成ast–&gt;optimize（标记静态节点） –&gt; generate（codegen：将ast转换为可执行的代码render function）–&gt;vnode</p>
+<p>updateComponent –&gt; _render –&gt;createElememt –&gt; _createElement –&gt; createComponent –&gt; 实例化vnode –&gt; patch –&gt;vnode –&gt; DOM</p>
+<p>createComponent –&gt; initComponent –&gt; componentInstance –&gt; componnentInstanceForVNode –&gt;  return new vnode.componentOptions.Ctor(options)  –&gt; 合并options –&gt; 执行$mount –&gt;调用——_render方法</p>
+<p><em>update–&gt; __patch_\</em> –&gt;web –&gt; return patch –&gt; createElm –&gt; 创建真实DOM</p>
+<p>4.了解了diff算法的比较方式，渐进对比比较。通过step在同一层级比较。</p>
+<p>5.知道了组件注册使用vnode的占位的方式。</p>
+<p>6.响应式的原理理顺了，了解了computed和watch都是基于watcher实现的，就是配置参数不一样，computed不同。</p>
+<p>7.了解了slot和slot-scoped在源码上的区别，之前使用老是不能够区分。普通插槽就是在父组件实例上，作用域插槽是在子组件实例上的，但是他的参数是通过父组件的ast参数中的slotScoped属性赋值给子组件的。</p>
+<p>8.keep-alive源码上了解了vue是如何实现缓存的，通过缓存vnode来保存dom，首次渲染相同，但是当命中缓存时，就会跳出原来的created，mounted等，返回之前存储的vnode，通过重新对slot解析，触发$forceUpdate，可以利用的生命周期就是actived。</p>
+<p>9.emit父子传参的源码实现，就是emit执行函数是，回调函数在父组件，所以实现了父子组件的传参。</p>
+<p>10.$forceUpdate 的逻辑非常简单，就是调用渲染 watcher 的 update 方法，update方法进入queueWatcher，nextTick执行flushSchedulerQueue。之后都会执行vm._update(vm._render)。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">daMu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://github.com/DaMu2018/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/">https://github.com/DaMu2018/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://github.com/DaMu2018/treeSir.github.io" target="_blank">treeSir's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/treeSir.github.io/tags/vue/">vue</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/treeSir.github.io/2021/05/29/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%887%EF%BC%89-%E5%B8%B8%E7%94%A8%E8%A7%A3%E6%9E%90/"><img class="next-cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="onerror=null;src='/treeSir.github.io/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Vue源码学习（7）-常用解析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/treeSir.github.io/2021/04/19/$nextTick和$forceUpdate/" title="$nextTick和$forceUpdate解析"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-19</div><div class="title">$nextTick和$forceUpdate解析</div></div></a></div><div><a href="/treeSir.github.io/2020/03/18/Vue源码学习（2）/" title="Vue源码学习（2）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-18</div><div class="title">Vue源码学习（2）</div></div></a></div><div><a href="/treeSir.github.io/2020/03/16/Vue源码学习（1）/" title="Vue源码学习（1）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-16</div><div class="title">Vue源码学习（1）</div></div></a></div><div><a href="/treeSir.github.io/2021/04/25/Vue源码学习（3）/" title="Vue源码学习（3）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-25</div><div class="title">Vue源码学习（3）</div></div></a></div><div><a href="/treeSir.github.io/2021/04/30/Vue源码学习（4）-生命周期-组件/" title="Vue源码学习（4）"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-30</div><div class="title">Vue源码学习（4）</div></div></a></div><div><a href="/treeSir.github.io/2021/05/07/Vue源码学习（5）-响应式/" title="Vue源码学习（5）-响应式"><img class="cover" src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-07</div><div class="title">Vue源码学习（5）-响应式</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/treeSir.github.io/img/yaya1.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">daMu</div><div class="author-info__description">减肥</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/treeSir.github.io/archives/"><div class="headline">文章</div><div class="length-num">15</div></a></div><div class="card-info-data-item is-center"><a href="/treeSir.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><a class="button--animated" id="card-info-btn" href="https://github.com/DaMu2018"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is DaMu2018`s Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/" title="Vue源码学习（8）小结"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（8）小结"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/06/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%888%EF%BC%89-%E5%B0%8F%E7%BB%93/" title="Vue源码学习（8）小结">Vue源码学习（8）小结</a><time datetime="2021-06-13T03:10:13.000Z" title="发表于 2021-06-13 11:10:13">2021-06-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/05/29/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%887%EF%BC%89-%E5%B8%B8%E7%94%A8%E8%A7%A3%E6%9E%90/" title="Vue源码学习（7）-常用解析"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（7）-常用解析"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/05/29/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%887%EF%BC%89-%E5%B8%B8%E7%94%A8%E8%A7%A3%E6%9E%90/" title="Vue源码学习（7）-常用解析">Vue源码学习（7）-常用解析</a><time datetime="2021-05-29T04:31:54.000Z" title="发表于 2021-05-29 12:31:54">2021-05-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/05/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%885%EF%BC%89-%E5%93%8D%E5%BA%94%E5%BC%8F(2)-%E7%BB%84%E4%BB%B6/" title="Vue源码学习（5）响应式-组件"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（5）响应式-组件"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/05/25/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%885%EF%BC%89-%E5%93%8D%E5%BA%94%E5%BC%8F(2)-%E7%BB%84%E4%BB%B6/" title="Vue源码学习（5）响应式-组件">Vue源码学习（5）响应式-组件</a><time datetime="2021-05-25T02:37:14.000Z" title="发表于 2021-05-25 10:37:14">2021-05-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/05/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%886%EF%BC%89-%E7%BC%96%E8%AF%91/" title="Vue源码学习（6）-编译"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（6）-编译"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/05/13/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%886%EF%BC%89-%E7%BC%96%E8%AF%91/" title="Vue源码学习（6）-编译">Vue源码学习（6）-编译</a><time datetime="2021-05-13T11:49:41.000Z" title="发表于 2021-05-13 19:49:41">2021-05-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/treeSir.github.io/2021/05/07/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%885%EF%BC%89-%E5%93%8D%E5%BA%94%E5%BC%8F/" title="Vue源码学习（5）-响应式"><img src="https://raw.githubusercontent.com/DaMu2018/cloudimg/main/data/vue.png" onerror="this.onerror=null;this.src='/treeSir.github.io/img/404.jpg'" alt="Vue源码学习（5）-响应式"/></a><div class="content"><a class="title" href="/treeSir.github.io/2021/05/07/Vue%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%EF%BC%885%EF%BC%89-%E5%93%8D%E5%BA%94%E5%BC%8F/" title="Vue源码学习（5）-响应式">Vue源码学习（5）-响应式</a><time datetime="2021-05-07T01:26:07.000Z" title="发表于 2021-05-07 09:26:07">2021-05-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By daMu</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/treeSir.github.io/js/utils.js"></script><script src="/treeSir.github.io/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
